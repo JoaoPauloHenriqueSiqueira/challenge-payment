@@ -16,9 +16,6 @@ class NotifyTransactionService extends RequestContract
     public function sendMessage($data)
     {
         try {
-            \Log::info($data);
-
-            
             $response = $this->request('POST', $this->url, $data);
 
             if ($response instanceof \Exception) {

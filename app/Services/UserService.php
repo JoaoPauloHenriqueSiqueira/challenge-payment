@@ -24,9 +24,9 @@ class UserService
      * Função que cria um usuário na base de dados, carteira e retorna um token
      *
      * @param RegisterRequest $request
-     * @return void
+     * @return Response
      */
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): Response
     {
         $data = $request->all();
 
@@ -44,9 +44,9 @@ class UserService
      * Função para retornar login do usuário
      *
      * @param LoginRequest $request
-     * @return void
+     * @return Response
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): Response
     {
         if (!auth()->attempt($request->all())) {
             return response([
@@ -109,6 +109,17 @@ class UserService
             ->paginate($limit);
 
         return UserResource::collection($result);
+    }
+
+    /**
+     * Retorna usuário buscado pelo id
+     *
+     * @param [type] $id
+     * @return JsonResource
+     */
+    public function get($id): JsonResource
+    {
+        return new UserResource($this->repository->find($id));
     }
 
     /**

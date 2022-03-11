@@ -6,11 +6,12 @@ endpoints:
       - POST
     uri: api/logout
     metadata:
-      title: ''
+      title: 'Log the user out of the application.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -18,20 +19,28 @@ endpoints:
     bodyParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+              "message": "Deslogado com sucesso."
+          }
+        headers: []
+        description: '200, Success'
+      -
+        status: 400
+        content: |-
+          {
+              "message": "Unauthenticated."
+          }
+        headers: []
+        description: '400, Unauthenticated'
     responseFields: []
   -
     httpMethods:
       - POST
     uri: api/register
     metadata:
-      title: ''
+      title: 'Handle a registration request for the application.'
       description: ''
       authenticated: false
       custom: []
@@ -43,52 +52,79 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'The name of the user.'
         required: true
-        example: lqxvpfnzcaoetfzlhdhilkrcfocbkimltbczkngqokcozmitiemggvhthlrjtfrigmwgavtvepwxtgegtglloszggxjzhqgtqjumwqtfisexcmjuxsnzirlxtjgutktaxbjtoamscytgoovlwigylxzhwqizesoprxuprxzirynmbpmsttz
+        example: 'Gabriel Mendes'
         type: string
         custom: []
       email:
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        description: 'The email of the user.'
         required: true
-        example: xuknfanqthphzadnoykuohhioiglimbvnvaizwybmcwqvlwjaapafacoqzifjnxtebgzxmrdocyuvsdfsmxatugrwtevxicnniwvjtqvadblzwymkboablkdqiigkakwdufxrigrkztwgwecdhuzyy
-        type: string
+        example: gabriel@gmail.com.br
+        type: email
         custom: []
       password:
         name: password
-        description: 'Must be at least 5 characters. Must not be greater than 20 characters.'
+        description: 'The password of the user.'
         required: true
-        example: dtakqxbuife
-        type: string
+        example: '123456'
+        type: password
         custom: []
       cpf:
         name: cpf
-        description: 'Must be at least 11 characters. Must not be greater than 11 characters.'
+        description: 'The cpf of the user.'
         required: true
-        example: wxvtfyclmyw
+        example: 948.305.030-84
         type: string
+        custom: []
+      password_confirmation:
+        name: password_confirmation
+        description: 'The password confirmation of the user.'
+        required: true
+        example: '123456'
+        type: password
         custom: []
     responses:
       -
+        status: 200
+        content: |-
+          {
+           "user": {
+               "name": "José",
+               "email": "jose@gmail.com",
+               "cpf": "412.260.118-28",
+               "is_shopkeeper": "1",
+               "updated_at": "2022-03-11T13:31:19.000000Z",
+               "created_at": "2022-03-11T13:31:19.000000Z",
+               "id": 4
+          },
+           "token": "4|mRXLMJGW4JX7ySXqEmiOO2C0kVQQQg7ba15CYKHi"
+          }
+        headers: []
+        description: '200'
+      -
         status: 422
-        content: '{"message":"The given data was invalid.","errors":{"email":["Email precisa ser um email v\u00e1lido"],"password":["Campo Password precisa ser confirmado"]}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
-          access-control-allow-origin: '*'
-        description: null
+        content: |-
+          {
+             "message": "The given data was invalid.",
+             "errors": {
+                 "email": [
+                     "The email field is required."
+                 ]
+             }
+          }
+        headers: []
+        description: '422, Validation error'
     responseFields: []
   -
     httpMethods:
       - POST
     uri: api/login
     metadata:
-      title: ''
+      title: 'Handle a login request to the application.'
       description: ''
-      authenticated: true
+      authenticated: false
       custom: []
     headers:
       Content-Type: application/json
@@ -98,30 +134,40 @@ endpoints:
     bodyParameters:
       email:
         name: email
-        description: ''
-        required: false
-        example: null
-        type: string
+        description: 'The email of the user.'
+        required: true
+        example: gabriel@gmail.com.br
+        type: email
         custom: []
       password:
         name: password
-        description: ''
+        description: 'The password of the user.'
         required: true
-        example: non
-        type: string
+        example: '123456'
+        type: password
         custom: []
     responses:
       -
-        status: 204
-        content: '{}'
-        headers: []
-        description: '204, Success'
-      -
-        status: 400
+        status: 422
         content: |-
           {
-              "message": "Unauthenticated."
+             "message": "The given data was invalid.",
+             "errors": {
+                 "email": [
+                     "The email field is required."
+                 ]
+             }
           }
         headers: []
-        description: '400, Unauthenticated'
+        description: '422, Validation error'
+      -
+        status: 422
+        content: '{"message":"The given data was invalid.","errors":{"email":["Usu\u00e1rio n\u00e3o encontrado em nossa base"]}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '59'
+          access-control-allow-origin: '*'
+        description: null
     responseFields: []

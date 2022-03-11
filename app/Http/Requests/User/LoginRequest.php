@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         $valid =  [
-            'email' => 'exists:users,email',
+            'email' => 'required|exists:users,email',
             'password' => 'required',
         ];
 
