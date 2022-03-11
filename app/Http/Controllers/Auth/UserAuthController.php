@@ -7,6 +7,9 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\UserService;
 
+/**
+ * @group Auth endpoints
+ */
 class UserAuthController extends Controller
 {
     protected $service;
@@ -21,6 +24,12 @@ class UserAuthController extends Controller
         return $this->service->register($request);
     }
 
+    /** @authenticated
+     * @response status=204 scenario="Success" {}
+     * @response status=400 scenario="Unauthenticated" {
+     *     "message": "Unauthenticated."
+     * }
+     */
     public function login(LoginRequest $request)
     {
         return $this->service->login($request);
