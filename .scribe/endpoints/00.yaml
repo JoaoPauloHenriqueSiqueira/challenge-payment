@@ -1,12 +1,12 @@
-name: 'Auth endpoints'
+name: 'Transaction endpoints'
 description: ''
 endpoints:
   -
     httpMethods:
       - POST
-    uri: api/logout
+    uri: api/pay
     metadata:
-      title: 'Log the user out of the application.'
+      title: 'Amount a quantity to logged user''s wallet.'
       description: ''
       authenticated: true
       custom: []
@@ -16,90 +16,32 @@ endpoints:
       Accept: application/json
     urlParameters: []
     queryParameters: []
-    bodyParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-              "message": "Deslogado com sucesso."
-          }
-        headers: []
-        description: '200, Success'
-      -
-        status: 400
-        content: |-
-          {
-              "message": "Unauthenticated."
-          }
-        headers: []
-        description: '400, Unauthenticated'
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: api/register
-    metadata:
-      title: 'Handle a registration request for the application.'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
     bodyParameters:
-      name:
-        name: name
-        description: 'The name of the user.'
+      amount:
+        name: amount
+        description: 'Amount to deposit.'
         required: true
-        example: 'Gabriel Mendes'
+        example: 98.51
+        type: number
+        custom: []
+      payee:
+        name: payee
+        description: 'Payee (wallet''s user to receive the money).'
+        required: true
+        example: ads14c11-eaf2-49a5-ad5d-70b2d3de590b
         type: string
-        custom: []
-      email:
-        name: email
-        description: 'The email of the user.'
-        required: true
-        example: gabriel@gmail.com.br
-        type: email
-        custom: []
-      password:
-        name: password
-        description: 'The password of the user.'
-        required: true
-        example: '123456'
-        type: password
-        custom: []
-      cpf:
-        name: cpf
-        description: 'The cpf of the user.'
-        required: true
-        example: 948.305.030-84
-        type: string
-        custom: []
-      password_confirmation:
-        name: password_confirmation
-        description: 'The password confirmation of the user.'
-        required: true
-        example: '123456'
-        type: password
         custom: []
     responses:
       -
         status: 200
         content: |-
           {
-           "user": {
-               "name": "José",
-               "email": "jose@gmail.com",
-               "cpf": "412.260.118-28",
-               "is_shopkeeper": "1",
-               "updated_at": "2022-03-11T13:31:19.000000Z",
-               "created_at": "2022-03-11T13:31:19.000000Z",
-               "id": 4
-          },
-           "token": "4|mRXLMJGW4JX7ySXqEmiOO2C0kVQQQg7ba15CYKHi"
+            "payload": {
+                "value": "R$98.51",
+                "payer": "d0b14c11-eaf2-49a5-ad5d-70b2d3de590b",
+                "payee": "ads14c11-eaf2-49a5-ad5d-70b2d3de590b"
+            },
+            "message": "Valor pago com sucesso. Enviamos uma notificação para o(a) Sr(a). José"
           }
         headers: []
         description: '200'
@@ -107,67 +49,26 @@ endpoints:
         status: 422
         content: |-
           {
-             "message": "The given data was invalid.",
-             "errors": {
-                 "email": [
-                     "The email field is required."
-                 ]
-             }
+            "message": "The given data was invalid.",
+            "errors": {
+                "amount": [
+                    "Necessário informar o valor(amount) a ser pago"
+                ]
+            }
           }
         headers: []
         description: '422, Validation error'
-    responseFields: []
-  -
-    httpMethods:
-      - POST
-    uri: api/login
-    metadata:
-      title: 'Handle a login request to the application.'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    queryParameters: []
-    bodyParameters:
-      email:
-        name: email
-        description: 'The email of the user.'
-        required: true
-        example: gabriel@gmail.com.br
-        type: email
-        custom: []
-      password:
-        name: password
-        description: 'The password of the user.'
-        required: true
-        example: '123456'
-        type: password
-        custom: []
-    responses:
       -
         status: 422
         content: |-
           {
-             "message": "The given data was invalid.",
-             "errors": {
-                 "email": [
-                     "The email field is required."
-                 ]
-             }
+            "message": "The given data was invalid.",
+            "errors": {
+                "payee": [
+                    "Carteira não encontrada em nossa base"
+                ]
+            }
           }
         headers: []
-        description: '422, Validation error'
-      -
-        status: 422
-        content: '{"message":"The given data was invalid.","errors":{"email":["Usu\u00e1rio n\u00e3o encontrado em nossa base"]}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
-          access-control-allow-origin: '*'
-        description: null
+        description: '422, Wallet not found'
     responseFields: []

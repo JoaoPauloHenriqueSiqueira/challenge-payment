@@ -33,7 +33,7 @@ class PaymentRequest extends FormRequest
     public function messages()
     {
         return [
-            'amount.required' => 'Necessário informar o valor(amount) a ser depositado',
+            'amount.required' => 'Necessário informar o valor(amount) a ser pago',
             'amount.gt' => 'Valor(amount) precisa ser positivo',
             'payee.required' => 'Necessário informar o beneficiário(payee)',
             'payee.exists' => 'Carteira não encontrada em nossa base',

@@ -1,0 +1,108 @@
+name: 'Wallet endpoints'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/deposit
+    metadata:
+      title: 'Amount a quantity to logged user''s wallet.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      amount:
+        name: amount
+        description: 'Amount to deposit.'
+        required: true
+        example: 98.51
+        type: number
+        custom: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "message": "Valor depositado com sucesso"
+          }
+        headers: []
+        description: '200'
+      -
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid.",
+            "errors": {
+                "amount": [
+                    "Necessário informar o valor(amount) a ser depositado"
+                ]
+            }
+          }
+        headers: []
+        description: '422, Validation error'
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: api/wallet
+    metadata:
+      title: 'Show logged user''s wallet.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          scenario
+          {
+            "data": {
+                "token": "d0b14c11-eaf2-49a5-ad5d-70b2d3de590b",
+                "balance": "R$23,00",
+                "received_history": [],
+               "payment_history": [
+                    {
+                        "date": "12/03/2022 01:36:02",
+                        "value": "R$1,00",
+                        "user": {
+                            "id": 7,
+                            "name": "José",
+                            "email": "jos2e@gmail.com",
+                            "cpf": "***.412.261-**",
+                            "wallet": {
+                                "token": "ads14c11-eaf2-49a5-ad5d-70b2d3de590b"
+                            }
+                        }
+                    },
+                    {
+                        "date": "12/03/2022 01:36:11",
+                        "value": "R$12,00",
+                        "user": {
+                            "id": 7,
+                            "name": "José",
+                            "email": "jos2e@gmail.com",
+                            "cpf": "***.412.261-**",
+                            "wallet": {
+                                "token": "ads14c11-eaf2-49a5-ad5d-70b2d3de590b"
+                            }
+                        }
+                    }
+                ]
+           }
+          }
+        headers: []
+        description: '200'
+    responseFields: []

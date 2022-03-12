@@ -8,11 +8,12 @@ endpoints:
       - PUT
     uri: api/profile
     metadata:
-      title: ''
+      title: 'Handle a registration request for the application.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -20,44 +21,191 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: oylfttiexxssquasgpwoklwhsvq
+        description: 'The name of the user.'
+        required: true
+        example: 'Gabriel Mendes'
         type: string
         custom: []
       email:
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
-        required: false
-        example: zglbjwijpijqckrvdwtrbugtpryoyvttpklzgfqjbzvckjpgebxcapnskbznbimvzblxjxnnfmgynlqqwsoavlnmxjpufpaulepnuaavsxeyuvnczcedeqqwdjoethkj
-        type: string
+        description: 'The email of the user.'
+        required: true
+        example: gabriel@gmail.com.br
+        type: email
         custom: []
       password:
         name: password
-        description: 'Must be at least 5 characters. Must not be greater than 20 characters.'
-        required: false
-        example: lntgxhy
-        type: string
+        description: 'The password of the user.'
+        required: true
+        example: '123456'
+        type: password
         custom: []
-      cpf:
-        name: cpf
-        description: ''
-        required: false
-        example: null
-        type: string
+      password_confirmation:
+        name: password_confirmation
+        description: 'The password confirmation of the user.'
+        required: true
+        example: '123456'
+        type: password
         custom: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "Dados alterados. Necessário fazer login novamente"
+          }
+        headers: []
+        description: '200, success changing password'
+      -
+        status: 200
+        content: |-
+          {
+            "user": {
+                "id": 4,
+                "name": "José Osvaldo s",
+                "email": "jose@gmail.com",
+                "email_verified_at": null,
+                "cpf": "412.260.118-28",
+                "is_shopkeeper": 0,
+                "created_at": "2022-03-11T13:31:19.000000Z",
+                "updated_at": "2022-03-12T11:52:51.000000Z"
+            }
+          }
+        headers: []
+        description: '200, success not changing password'
+      -
+        status: 422
+        content: |-
+          {
+             "message": "The given data was invalid.",
+             "errors": {
+                 "email": [
+                     "Esse email já está registrado em nossa base"
+                 ]
+             }
+          }
+        headers: []
+        description: '422, Validation error'
     responseFields: []
   -
     httpMethods:
       - GET
     uri: api/users
     metadata:
-      title: ''
+      title: 'Paginate users according same parameters get'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters:
+      order:
+        name: order
+        description: 'Comma-separated fields to include in the response.'
+        required: false
+        example: 'email,desc'
+        type: string
+        custom: []
+      limit:
+        name: limit
+        description: 'Quantity to show per page. Defaults to ''20''.'
+        required: false
+        example: 7
+        type: integer
+        custom: []
+    bodyParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": [{
+                    "id": 5,
+                    "name": "Demo",
+                    "email": "demo@demo.com",
+                    "cpf": "***.392.260-**",
+                    "wallet": null
+                },
+                {
+                    "id": 6,
+                    "name": "Demo",
+                    "email": "demo@demo.com2",
+                    "cpf": "***.392.260-**",
+                    "wallet": null
+                },
+                {
+                    "id": 9,
+                    "name": "José Osvaldo s",
+                    "email": "joao@gmail.comasd",
+                    "cpf": "***.392.260-**",
+                    "wallet": null
+                }
+            ]
+
+          }
+        headers: []
+        description: '200'
+    responseFields: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/users/{id}'
+    metadata:
+      title: 'GET user according $id'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the user.'
+        required: true
+        example: 2
+        type: integer
+        custom: []
+    queryParameters: []
+    bodyParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "data": {
+                "id": 5,
+                "name": "Demo",
+                "email": "demo@demo.com",
+                "cpf": "***.392.260-**",
+                "wallet": null
+            }
+          }
+        headers: []
+        description: '200'
+      -
+        status: 422
+        content: |-
+          {
+             "message": "Usuário não encontrado em nossa base.",
+        headers: []
+        description: '422, Validation error'
+    responseFields: []
+  -
+    httpMethods:
+      - DELETE
+    uri: api/profile
+    metadata:
+      title: 'Delete the user logged.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -65,67 +213,19 @@ endpoints:
     bodyParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-  -
-    httpMethods:
-      - GET
-    uri: 'api/users/{id}'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        name: id
-        description: 'The ID of the user.'
-        required: true
-        example: 9
-        type: integer
-        custom: []
-    queryParameters: []
-    bodyParameters: []
-    responses:
+        status: 200
+        content: |-
+          {
+           "message": "Conta removida. Até breve =)"
+          }
+        headers: []
+        description: '200, Success'
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-  -
-    httpMethods:
-      - DELETE
-    uri: 'api/users/{id}'
-    metadata:
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        name: id
-        description: 'The ID of the user.'
-        required: true
-        example: 1
-        type: integer
-        custom: []
-    queryParameters: []
-    bodyParameters: []
-    responses: []
+        status: 400
+        content: |-
+          {
+              "message": "Unauthenticated."
+          }
+        headers: []
+        description: '400, Unauthenticated'
     responseFields: []

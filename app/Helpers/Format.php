@@ -25,6 +25,11 @@ class Format
         return $symbol . number_format($value, $round, $decimal, $thousands);
     }
 
+    public static function extractNumbers($value)
+    {
+        return preg_replace('[\D]', '', $value);
+    }
+
     public static function cpfExpression($value)
     {
         $value = preg_replace('[\D]', '', $value);

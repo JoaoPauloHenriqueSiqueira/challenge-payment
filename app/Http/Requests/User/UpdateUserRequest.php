@@ -3,7 +3,6 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -27,9 +26,7 @@ class UpdateUserRequest extends FormRequest
         $valid =  [
             'name' => 'max:255',
             'email' => 'unique:users|email|max:255',
-            'password' => 'confirmed|min:5|max:20',
-            'cpf' => 'unique:users'
-
+            'password' => 'confirmed|min:5|max:20'
         ];
 
         return $valid;
@@ -44,8 +41,7 @@ class UpdateUserRequest extends FormRequest
             'email.max' => 'São permitidas 255 letras para o campo email',
             'password.confirmed' => 'Campo Password precisa ser confirmado',
             'password.min' => 'Password precisa ter no mínimo 5 caracteres',
-            'password.max' => 'Password precisa ter no máximo 20 caracteres',
-            'cpf.unique' => 'Esse CPF já está registrado em nossa base',
+            'password.max' => 'Password precisa ter no máximo 20 caracteres'
         ];
     }
 }
