@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('cpf')->unique();
             $table->boolean('is_shopkeeper')->unsigned()->nullable(false)->default(0);
             $table->rememberToken();
+            $table->softDeletes('deleted_at');
             $table->timestamps();
         });
     }

@@ -68,6 +68,16 @@
                                                 </ul>
                     
                     <ul id="tocify-header-2" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="transaction-endpoints">
+                    <a href="#transaction-endpoints">Transaction endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-transaction-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="transaction-endpoints-POSTapi-pay">
+                        <a href="#transaction-endpoints-POSTapi-pay">Amount a quantity to logged user&#039;s wallet.</a>
+                    </li>
+                                                    </ul>
+                            </ul>
+                    <ul id="tocify-header-3" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="auth-endpoints">
                     <a href="#auth-endpoints">Auth endpoints</a>
                 </li>
@@ -83,38 +93,35 @@
                     </li>
                                                     </ul>
                             </ul>
-                    <ul id="tocify-header-3" class="tocify-header">
-                <li class="tocify-item level-1" data-unique="endpoints">
-                    <a href="#endpoints">Endpoints</a>
-                </li>
-                                    <ul id="tocify-subheader-endpoints" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-wallets">
-                        <a href="#endpoints-GETapi-wallets">GET api/wallets</a>
-                    </li>
-                                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-deposit">
-                        <a href="#endpoints-POSTapi-deposit">POST api/deposit</a>
-                    </li>
-                                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-pay">
-                        <a href="#endpoints-POSTapi-pay">POST api/pay</a>
-                    </li>
-                                                    </ul>
-                            </ul>
                     <ul id="tocify-header-4" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="user-endpoints">
                     <a href="#user-endpoints">User endpoints</a>
                 </li>
                                     <ul id="tocify-subheader-user-endpoints" class="tocify-subheader">
                                                     <li class="tocify-item level-2" data-unique="user-endpoints-PUTapi-profile">
-                        <a href="#user-endpoints-PUTapi-profile">PUT api/profile</a>
+                        <a href="#user-endpoints-PUTapi-profile">Handle a registration request for the application.</a>
                     </li>
                                     <li class="tocify-item level-2" data-unique="user-endpoints-GETapi-users">
-                        <a href="#user-endpoints-GETapi-users">GET api/users</a>
+                        <a href="#user-endpoints-GETapi-users">Paginate users according same parameters get</a>
                     </li>
                                     <li class="tocify-item level-2" data-unique="user-endpoints-GETapi-users--id-">
-                        <a href="#user-endpoints-GETapi-users--id-">GET api/users/{id}</a>
+                        <a href="#user-endpoints-GETapi-users--id-">GET user according $id</a>
                     </li>
-                                    <li class="tocify-item level-2" data-unique="user-endpoints-DELETEapi-users--id-">
-                        <a href="#user-endpoints-DELETEapi-users--id-">DELETE api/users/{id}</a>
+                                    <li class="tocify-item level-2" data-unique="user-endpoints-DELETEapi-profile">
+                        <a href="#user-endpoints-DELETEapi-profile">Delete the user logged.</a>
+                    </li>
+                                                    </ul>
+                            </ul>
+                    <ul id="tocify-header-5" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="wallet-endpoints">
+                    <a href="#wallet-endpoints">Wallet endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-wallet-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="wallet-endpoints-POSTapi-deposit">
+                        <a href="#wallet-endpoints-POSTapi-deposit">Amount a quantity to logged user&#039;s wallet.</a>
+                    </li>
+                                    <li class="tocify-item level-2" data-unique="wallet-endpoints-GETapi-wallet">
+                        <a href="#wallet-endpoints-GETapi-wallet">Show logged user&#039;s wallet.</a>
                     </li>
                                                     </ul>
                             </ul>
@@ -127,7 +134,7 @@
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
         <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 11 2022</li>
+        <li>Last updated: March 12 2022</li>
     </ul>
 </div>
 
@@ -144,9 +151,160 @@ You can switch the language used with the tabs at the top right (or from the nav
 <pre><code class="language-yaml">http://localhost</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
-<p>Authenticate requests to this API's endpoints by sending an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
+<p>This API is authenticated by sending an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
 <p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
 <p>You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.</p>
+
+        <h1 id="transaction-endpoints">Transaction endpoints</h1>
+
+    
+
+            <h2 id="transaction-endpoints-POSTapi-pay">Amount a quantity to logged user&#039;s wallet.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-POSTapi-pay">
+<blockquote>Example request:</blockquote>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://localhost/api/pay',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'amount' =&gt; 98.51,
+            'payee' =&gt; 'ads14c11-eaf2-49a5-ad5d-70b2d3de590b',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-pay">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;payload&quot;: {
+        &quot;value&quot;: &quot;R$98.51&quot;,
+        &quot;payer&quot;: &quot;d0b14c11-eaf2-49a5-ad5d-70b2d3de590b&quot;,
+        &quot;payee&quot;: &quot;ads14c11-eaf2-49a5-ad5d-70b2d3de590b&quot;
+    },
+    &quot;message&quot;: &quot;Valor pago com sucesso. Enviamos uma notifica&ccedil;&atilde;o para o(a) Sr(a). Jos&eacute;&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;amount&quot;: [
+            &quot;Necess&aacute;rio informar o valor(amount) a ser pago&quot;
+        ]
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Wallet not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;payee&quot;: [
+            &quot;Carteira n&atilde;o encontrada em nossa base&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-pay" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-pay"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-pay"></code></pre>
+</span>
+<span id="execution-error-POSTapi-pay" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-pay"></code></pre>
+</span>
+<form id="form-POSTapi-pay" data-method="POST"
+      data-path="api/pay"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-pay', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-pay"
+                    onclick="tryItOut('POSTapi-pay');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-pay"
+                    onclick="cancelTryOut('POSTapi-pay');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-pay" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/pay</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-pay" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-pay"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>amount</code></b>&nbsp;&nbsp;<small>number</small>  &nbsp;
+                <input type="number"
+               name="amount"
+               data-endpoint="POSTapi-pay"
+               value="98.51"
+               data-component="body" hidden>
+    <br>
+<p>Amount to deposit.</p>
+        </p>
+                <p>
+            <b><code>payee</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="payee"
+               data-endpoint="POSTapi-pay"
+               value="ads14c11-eaf2-49a5-ad5d-70b2d3de590b"
+               data-component="body" hidden>
+    <br>
+<p>Payee (wallet's user to receive the money).</p>
+        </p>
+        </form>
 
         <h1 id="auth-endpoints">Auth endpoints</h1>
 
@@ -543,317 +701,14 @@ access-control-allow-origin: *
         </p>
         </form>
 
-        <h1 id="endpoints">Endpoints</h1>
-
-    
-
-            <h2 id="endpoints-GETapi-wallets">GET api/wallets</h2>
-
-<p>
-</p>
-
-
-
-<span id="example-requests-GETapi-wallets">
-<blockquote>Example request:</blockquote>
-
-
-<div class="php-example">
-    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$response = $client-&gt;get(
-    'http://localhost/api/wallets',
-    [
-        'headers' =&gt; [
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre></div>
-
-</span>
-
-<span id="example-responses-GETapi-wallets">
-            <blockquote>
-            <p>Example response (401):</p>
-        </blockquote>
-                <details class="annotation">
-            <summary>
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-        </details>         <pre>
-
-<code class="language-json">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-GETapi-wallets" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-GETapi-wallets"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-wallets"></code></pre>
-</span>
-<span id="execution-error-GETapi-wallets" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-wallets"></code></pre>
-</span>
-<form id="form-GETapi-wallets" data-method="GET"
-      data-path="api/wallets"
-      data-authed="0"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('GETapi-wallets', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-GETapi-wallets"
-                    onclick="tryItOut('GETapi-wallets');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-GETapi-wallets"
-                    onclick="cancelTryOut('GETapi-wallets');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-GETapi-wallets" hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-green">GET</small>
-            <b><code>api/wallets</code></b>
-        </p>
-                    </form>
-
-            <h2 id="endpoints-POSTapi-deposit">POST api/deposit</h2>
-
-<p>
-</p>
-
-
-
-<span id="example-requests-POSTapi-deposit">
-<blockquote>Example request:</blockquote>
-
-
-<div class="php-example">
-    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$response = $client-&gt;post(
-    'http://localhost/api/deposit',
-    [
-        'headers' =&gt; [
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-        'json' =&gt; [
-            'amount' =&gt; 32687590.6214,
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre></div>
-
-</span>
-
-<span id="example-responses-POSTapi-deposit">
-            <blockquote>
-            <p>Example response (401):</p>
-        </blockquote>
-                <details class="annotation">
-            <summary>
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-        </details>         <pre>
-
-<code class="language-json">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-POSTapi-deposit" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-POSTapi-deposit"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-POSTapi-deposit"></code></pre>
-</span>
-<span id="execution-error-POSTapi-deposit" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-POSTapi-deposit"></code></pre>
-</span>
-<form id="form-POSTapi-deposit" data-method="POST"
-      data-path="api/deposit"
-      data-authed="0"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('POSTapi-deposit', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-POSTapi-deposit"
-                    onclick="tryItOut('POSTapi-deposit');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-POSTapi-deposit"
-                    onclick="cancelTryOut('POSTapi-deposit');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-POSTapi-deposit" hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-black">POST</small>
-            <b><code>api/deposit</code></b>
-        </p>
-                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <p>
-            <b><code>amount</code></b>&nbsp;&nbsp;<small>number</small>  &nbsp;
-                <input type="number"
-               name="amount"
-               data-endpoint="POSTapi-deposit"
-               value="32687590.6214"
-               data-component="body" hidden>
-    <br>
-
-        </p>
-        </form>
-
-            <h2 id="endpoints-POSTapi-pay">POST api/pay</h2>
-
-<p>
-</p>
-
-
-
-<span id="example-requests-POSTapi-pay">
-<blockquote>Example request:</blockquote>
-
-
-<div class="php-example">
-    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$response = $client-&gt;post(
-    'http://localhost/api/pay',
-    [
-        'headers' =&gt; [
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-        'json' =&gt; [
-            'amount' =&gt; 32.22449457,
-            'payee' =&gt; 'quisquam',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre></div>
-
-</span>
-
-<span id="example-responses-POSTapi-pay">
-            <blockquote>
-            <p>Example response (401):</p>
-        </blockquote>
-                <details class="annotation">
-            <summary>
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-        </details>         <pre>
-
-<code class="language-json">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
-}</code>
- </pre>
-    </span>
-<span id="execution-results-POSTapi-pay" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-POSTapi-pay"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-POSTapi-pay"></code></pre>
-</span>
-<span id="execution-error-POSTapi-pay" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-POSTapi-pay"></code></pre>
-</span>
-<form id="form-POSTapi-pay" data-method="POST"
-      data-path="api/pay"
-      data-authed="0"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('POSTapi-pay', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-POSTapi-pay"
-                    onclick="tryItOut('POSTapi-pay');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-POSTapi-pay"
-                    onclick="cancelTryOut('POSTapi-pay');" hidden>Cancel 🛑
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-POSTapi-pay" hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-black">POST</small>
-            <b><code>api/pay</code></b>
-        </p>
-                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <p>
-            <b><code>amount</code></b>&nbsp;&nbsp;<small>number</small>  &nbsp;
-                <input type="number"
-               name="amount"
-               data-endpoint="POSTapi-pay"
-               value="32.22449457"
-               data-component="body" hidden>
-    <br>
-
-        </p>
-                <p>
-            <b><code>payee</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-                <input type="text"
-               name="payee"
-               data-endpoint="POSTapi-pay"
-               value="quisquam"
-               data-component="body" hidden>
-    <br>
-
-        </p>
-        </form>
-
         <h1 id="user-endpoints">User endpoints</h1>
 
     
 
-            <h2 id="user-endpoints-PUTapi-profile">PUT api/profile</h2>
+            <h2 id="user-endpoints-PUTapi-profile">Handle a registration request for the application.</h2>
 
 <p>
+<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 
@@ -868,13 +723,15 @@ $response = $client-&gt;put(
     'http://localhost/api/profile',
     [
         'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'name' =&gt; 'oylfttiexxssquasgpwoklwhsvq',
-            'email' =&gt; 'zglbjwijpijqckrvdwtrbugtpryoyvttpklzgfqjbzvckjpgebxcapnskbznbimvzblxjxnnfmgynlqqwsoavlnmxjpufpaulepnuaavsxeyuvnczcedeqqwdjoethkj',
-            'password' =&gt; 'lntgxhy',
+            'name' =&gt; 'Gabriel Mendes',
+            'email' =&gt; 'gabriel@gmail.com.br',
+            'password' =&gt; '123456',
+            'password_confirmation' =&gt; '123456',
         ],
     ]
 );
@@ -884,7 +741,48 @@ print_r(json_decode((string) $body));</code></pre></div>
 </span>
 
 <span id="example-responses-PUTapi-profile">
-</span>
+            <blockquote>
+            <p>Example response (200, success changing password):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;Dados alterados. Necess&aacute;rio fazer login novamente&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, success not changing password):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;user&quot;: {
+        &quot;id&quot;: 4,
+        &quot;name&quot;: &quot;Jos&eacute; Osvaldo s&quot;,
+        &quot;email&quot;: &quot;jose@gmail.com&quot;,
+        &quot;email_verified_at&quot;: null,
+        &quot;cpf&quot;: &quot;412.260.118-28&quot;,
+        &quot;is_shopkeeper&quot;: 0,
+        &quot;created_at&quot;: &quot;2022-03-11T13:31:19.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2022-03-12T11:52:51.000000Z&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;email&quot;: [
+            &quot;Esse email j&aacute; est&aacute; registrado em nossa base&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-PUTapi-profile" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-PUTapi-profile"></span>:
@@ -897,10 +795,10 @@ print_r(json_decode((string) $body));</code></pre></div>
 </span>
 <form id="form-PUTapi-profile" data-method="PUT"
       data-path="api/profile"
-      data-authed="0"
+      data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('PUTapi-profile', this);">
     <h3>
@@ -924,52 +822,61 @@ print_r(json_decode((string) $body));</code></pre></div>
             <small class="badge badge-darkblue">PUT</small>
             <b><code>api/profile</code></b>
         </p>
-                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+                <p>
+            <label id="auth-PUTapi-profile" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="PUTapi-profile"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <p>
-            <b><code>name</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+            <b><code>name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
                 <input type="text"
                name="name"
                data-endpoint="PUTapi-profile"
-               value="oylfttiexxssquasgpwoklwhsvq"
+               value="Gabriel Mendes"
                data-component="body" hidden>
     <br>
-<p>Must not be greater than 255 characters.</p>
+<p>The name of the user.</p>
         </p>
                 <p>
-            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+            <b><code>email</code></b>&nbsp;&nbsp;<small>email</small>  &nbsp;
                 <input type="text"
                name="email"
                data-endpoint="PUTapi-profile"
-               value="zglbjwijpijqckrvdwtrbugtpryoyvttpklzgfqjbzvckjpgebxcapnskbznbimvzblxjxnnfmgynlqqwsoavlnmxjpufpaulepnuaavsxeyuvnczcedeqqwdjoethkj"
+               value="gabriel@gmail.com.br"
                data-component="body" hidden>
     <br>
-<p>Must be a valid email address. Must not be greater than 255 characters.</p>
+<p>The email of the user.</p>
         </p>
                 <p>
-            <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+            <b><code>password</code></b>&nbsp;&nbsp;<small>password</small>  &nbsp;
                 <input type="text"
                name="password"
                data-endpoint="PUTapi-profile"
-               value="lntgxhy"
+               value="123456"
                data-component="body" hidden>
     <br>
-<p>Must be at least 5 characters. Must not be greater than 20 characters.</p>
+<p>The password of the user.</p>
         </p>
                 <p>
-            <b><code>cpf</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+            <b><code>password_confirmation</code></b>&nbsp;&nbsp;<small>password</small>  &nbsp;
                 <input type="text"
-               name="cpf"
+               name="password_confirmation"
                data-endpoint="PUTapi-profile"
-               value=""
+               value="123456"
                data-component="body" hidden>
     <br>
-
+<p>The password confirmation of the user.</p>
         </p>
         </form>
 
-            <h2 id="user-endpoints-GETapi-users">GET api/users</h2>
+            <h2 id="user-endpoints-GETapi-users">Paginate users according same parameters get</h2>
 
 <p>
+<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 
@@ -984,8 +891,13 @@ $response = $client-&gt;get(
     'http://localhost/api/users',
     [
         'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'order'=&gt; 'email,desc',
+            'limit'=&gt; '7',
         ],
     ]
 );
@@ -996,20 +908,34 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-GETapi-users">
             <blockquote>
-            <p>Example response (401):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary>
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-        </details>         <pre>
+                <pre>
 
 <code class="language-json">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 5,
+            &quot;name&quot;: &quot;Demo&quot;,
+            &quot;email&quot;: &quot;demo@demo.com&quot;,
+            &quot;cpf&quot;: &quot;***.392.260-**&quot;,
+            &quot;wallet&quot;: null
+        },
+        {
+            &quot;id&quot;: 6,
+            &quot;name&quot;: &quot;Demo&quot;,
+            &quot;email&quot;: &quot;demo@demo.com2&quot;,
+            &quot;cpf&quot;: &quot;***.392.260-**&quot;,
+            &quot;wallet&quot;: null
+        },
+        {
+            &quot;id&quot;: 9,
+            &quot;name&quot;: &quot;Jos&eacute; Osvaldo s&quot;,
+            &quot;email&quot;: &quot;joao@gmail.comasd&quot;,
+            &quot;cpf&quot;: &quot;***.392.260-**&quot;,
+            &quot;wallet&quot;: null
+        }
+    ]
 }</code>
  </pre>
     </span>
@@ -1025,10 +951,10 @@ access-control-allow-origin: *
 </span>
 <form id="form-GETapi-users" data-method="GET"
       data-path="api/users"
-      data-authed="0"
+      data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-users', this);">
     <h3>
@@ -1052,11 +978,41 @@ access-control-allow-origin: *
             <small class="badge badge-green">GET</small>
             <b><code>api/users</code></b>
         </p>
-                    </form>
+                <p>
+            <label id="auth-GETapi-users" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-users"
+                                                                data-component="header"></label>
+        </p>
+                    <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                    <p>
+                <b><code>order</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="order"
+               data-endpoint="GETapi-users"
+               value="email,desc"
+               data-component="query" hidden>
+    <br>
+<p>Comma-separated fields to include in the response.</p>
+            </p>
+                    <p>
+                <b><code>limit</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+                <input type="number"
+               name="limit"
+               data-endpoint="GETapi-users"
+               value="7"
+               data-component="query" hidden>
+    <br>
+<p>Quantity to show per page. Defaults to '20'.</p>
+            </p>
+                </form>
 
-            <h2 id="user-endpoints-GETapi-users--id-">GET api/users/{id}</h2>
+            <h2 id="user-endpoints-GETapi-users--id-">GET user according $id</h2>
 
 <p>
+<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 
@@ -1068,9 +1024,10 @@ access-control-allow-origin: *
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/users/9',
+    'http://localhost/api/users/2',
     [
         'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
@@ -1083,21 +1040,27 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 <span id="example-responses-GETapi-users--id-">
             <blockquote>
-            <p>Example response (401):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary>
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-        </details>         <pre>
+                <pre>
 
 <code class="language-json">{
-    &quot;message&quot;: &quot;Unauthenticated.&quot;
+    &quot;data&quot;: {
+        &quot;id&quot;: 5,
+        &quot;name&quot;: &quot;Demo&quot;,
+        &quot;email&quot;: &quot;demo@demo.com&quot;,
+        &quot;cpf&quot;: &quot;***.392.260-**&quot;,
+        &quot;wallet&quot;: null
+    }
 }</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+   &quot;message&quot;: &quot;Usu&aacute;rio n&atilde;o encontrado em nossa base.&quot;,</code>
  </pre>
     </span>
 <span id="execution-results-GETapi-users--id-" hidden>
@@ -1112,10 +1075,10 @@ access-control-allow-origin: *
 </span>
 <form id="form-GETapi-users--id-" data-method="GET"
       data-path="api/users/{id}"
-      data-authed="0"
+      data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('GETapi-users--id-', this);">
     <h3>
@@ -1139,36 +1102,46 @@ access-control-allow-origin: *
             <small class="badge badge-green">GET</small>
             <b><code>api/users/{id}</code></b>
         </p>
-                    <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                <p>
+            <label id="auth-GETapi-users--id-" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-users--id-"
+                                                                data-component="header"></label>
+        </p>
+                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
                     <p>
                 <b><code>id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
                 <input type="number"
                name="id"
                data-endpoint="GETapi-users--id-"
-               value="9"
+               value="2"
                data-component="url" hidden>
     <br>
 <p>The ID of the user.</p>
             </p>
                     </form>
 
-            <h2 id="user-endpoints-DELETEapi-users--id-">DELETE api/users/{id}</h2>
+            <h2 id="user-endpoints-DELETEapi-profile">Delete the user logged.</h2>
 
 <p>
+<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 
 
-<span id="example-requests-DELETEapi-users--id-">
+<span id="example-requests-DELETEapi-profile">
 <blockquote>Example request:</blockquote>
 
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://localhost/api/users/1',
+    'http://localhost/api/profile',
     [
         'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
@@ -1179,59 +1152,317 @@ print_r(json_decode((string) $body));</code></pre></div>
 
 </span>
 
-<span id="example-responses-DELETEapi-users--id-">
-</span>
-<span id="execution-results-DELETEapi-users--id-" hidden>
+<span id="example-responses-DELETEapi-profile">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;Conta removida. At&eacute; breve =)&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Unauthenticated):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-DELETEapi-profile" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-DELETEapi-users--id-"></span>:
+                id="execution-response-status-DELETEapi-profile"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-DELETEapi-users--id-"></code></pre>
+    <pre class="json"><code id="execution-response-content-DELETEapi-profile"></code></pre>
 </span>
-<span id="execution-error-DELETEapi-users--id-" hidden>
+<span id="execution-error-DELETEapi-profile" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-DELETEapi-users--id-"></code></pre>
+    <pre><code id="execution-error-message-DELETEapi-profile"></code></pre>
 </span>
-<form id="form-DELETEapi-users--id-" data-method="DELETE"
-      data-path="api/users/{id}"
-      data-authed="0"
+<form id="form-DELETEapi-profile" data-method="DELETE"
+      data-path="api/profile"
+      data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-users--id-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-profile', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-DELETEapi-users--id-"
-                    onclick="tryItOut('DELETEapi-users--id-');">Try it out ⚡
+                    id="btn-tryout-DELETEapi-profile"
+                    onclick="tryItOut('DELETEapi-profile');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-DELETEapi-users--id-"
-                    onclick="cancelTryOut('DELETEapi-users--id-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-DELETEapi-profile"
+                    onclick="cancelTryOut('DELETEapi-profile');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-DELETEapi-users--id-" hidden>Send Request 💥
+                    id="btn-executetryout-DELETEapi-profile" hidden>Send Request 💥
             </button>
             </h3>
             <p>
             <small class="badge badge-red">DELETE</small>
-            <b><code>api/users/{id}</code></b>
+            <b><code>api/profile</code></b>
         </p>
-                    <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                    <p>
-                <b><code>id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <p>
+            <label id="auth-DELETEapi-profile" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="DELETEapi-profile"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+        <h1 id="wallet-endpoints">Wallet endpoints</h1>
+
+    
+
+            <h2 id="wallet-endpoints-POSTapi-deposit">Amount a quantity to logged user&#039;s wallet.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-POSTapi-deposit">
+<blockquote>Example request:</blockquote>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://localhost/api/deposit',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'amount' =&gt; 98.51,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-deposit">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;Valor depositado com sucesso&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Validation error):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;amount&quot;: [
+            &quot;Necess&aacute;rio informar o valor(amount) a ser depositado&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-deposit" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-deposit"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-deposit"></code></pre>
+</span>
+<span id="execution-error-POSTapi-deposit" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-deposit"></code></pre>
+</span>
+<form id="form-POSTapi-deposit" data-method="POST"
+      data-path="api/deposit"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-deposit', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-deposit"
+                    onclick="tryItOut('POSTapi-deposit');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-deposit"
+                    onclick="cancelTryOut('POSTapi-deposit');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-deposit" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/deposit</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-deposit" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-deposit"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>amount</code></b>&nbsp;&nbsp;<small>number</small>  &nbsp;
                 <input type="number"
-               name="id"
-               data-endpoint="DELETEapi-users--id-"
-               value="1"
-               data-component="url" hidden>
+               name="amount"
+               data-endpoint="POSTapi-deposit"
+               value="98.51"
+               data-component="body" hidden>
     <br>
-<p>The ID of the user.</p>
-            </p>
-                    </form>
+<p>Amount to deposit.</p>
+        </p>
+        </form>
+
+            <h2 id="wallet-endpoints-GETapi-wallet">Show logged user&#039;s wallet.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-GETapi-wallet">
+<blockquote>Example request:</blockquote>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost/api/wallet',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-wallet">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">scenario
+{
+  &quot;data&quot;: {
+      &quot;token&quot;: &quot;d0b14c11-eaf2-49a5-ad5d-70b2d3de590b&quot;,
+      &quot;balance&quot;: &quot;R$23,00&quot;,
+      &quot;received_history&quot;: [],
+     &quot;payment_history&quot;: [
+          {
+              &quot;date&quot;: &quot;12/03/2022 01:36:02&quot;,
+              &quot;value&quot;: &quot;R$1,00&quot;,
+              &quot;user&quot;: {
+                  &quot;id&quot;: 7,
+                  &quot;name&quot;: &quot;Jos&eacute;&quot;,
+                  &quot;email&quot;: &quot;jos2e@gmail.com&quot;,
+                  &quot;cpf&quot;: &quot;***.412.261-**&quot;,
+                  &quot;wallet&quot;: {
+                      &quot;token&quot;: &quot;ads14c11-eaf2-49a5-ad5d-70b2d3de590b&quot;
+                  }
+              }
+          },
+          {
+              &quot;date&quot;: &quot;12/03/2022 01:36:11&quot;,
+              &quot;value&quot;: &quot;R$12,00&quot;,
+              &quot;user&quot;: {
+                  &quot;id&quot;: 7,
+                  &quot;name&quot;: &quot;Jos&eacute;&quot;,
+                  &quot;email&quot;: &quot;jos2e@gmail.com&quot;,
+                  &quot;cpf&quot;: &quot;***.412.261-**&quot;,
+                  &quot;wallet&quot;: {
+                      &quot;token&quot;: &quot;ads14c11-eaf2-49a5-ad5d-70b2d3de590b&quot;
+                  }
+              }
+          }
+      ]
+ }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-wallet" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-wallet"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-wallet"></code></pre>
+</span>
+<span id="execution-error-GETapi-wallet" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-wallet"></code></pre>
+</span>
+<form id="form-GETapi-wallet" data-method="GET"
+      data-path="api/wallet"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-wallet', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-wallet"
+                    onclick="tryItOut('GETapi-wallet');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-wallet"
+                    onclick="cancelTryOut('GETapi-wallet');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-wallet" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/wallet</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-wallet" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-wallet"
+                                                                data-component="header"></label>
+        </p>
+                </form>
 
     
 

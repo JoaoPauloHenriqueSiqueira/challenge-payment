@@ -7,9 +7,12 @@ use App\Http\Requests\User\RegisterRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserService
 {
@@ -112,14 +115,20 @@ class UserService
     }
 
     /**
-     * Retorna usuário buscado pelo id
+     * Retorna dados de usuário
      *
      * @param [type] $id
-     * @return JsonResource
+     * @return mixed
      */
-    public function get($id): JsonResource
+    public function get($id)
     {
-        return new UserResource($this->repository->find($id));
+        try {
+            return new UserResource($this->repository->find($id));
+        } catch (ModelNotFoundException $e) {
+            return response([
+                'message' => 'Usuário não encontrado em nossa base'
+            ], 422);
+        }
     }
 
     /**
@@ -131,7 +140,7 @@ class UserService
     public function update(UpdateUserRequest $request): Response
     {
         $password = $request->password ? bcrypt($request->password) : false;
-        $data = $request->all();
+        $data = $request->except(['cpf']);
 
         if ($password) {
             $data['password'] = $password;
@@ -144,7 +153,7 @@ class UserService
             return $this->logout("Dados alterados. Necessário fazer login novamente");
         }
 
-        return response()->json($result);
+        return response(['user' => $result]);
     }
 
     /**

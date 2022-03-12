@@ -12,14 +12,20 @@ use Illuminate\Support\Facades\DB;
 class TransactionService
 {
     protected $repository;
-    protected $walletService;
 
     public function __construct(
-        TransactionRepositoryInterface $repository,
-        WalletService $walletService
+        TransactionRepositoryInterface $repository
     ) {
         $this->repository = $repository;
-        $this->walletService = $walletService;
+    }
+
+    public function create($payer, $payee, $amount)
+    {
+        return $this->repository->create([
+            'payer' => $payer,
+            'payee' => $payee,
+            'amount' => $amount
+        ]);
     }
 
     public function deposit($request)
@@ -34,18 +40,16 @@ class TransactionService
         DB::beginTransaction();
 
         try {
-            $this->walletService->withdraw($request);
-            $walletPayee = $this->walletService->deposit($request);
+            $walletService = app(WalletService::class);
+
+            $walletService->withdraw($request);
+            $walletPayee = $walletService->deposit($request);
 
             $this->validTransaction();
 
             $user = $walletPayee->user;
 
-            $this->repository->create([
-                'payer' => $myUser->id,
-                'payee' => $user->id,
-                'amount' => $request->amount
-            ]);
+            $this->create($myUser->id, $user->id, $request->amount);
 
             DB::commit();
 

@@ -20,12 +20,14 @@ Route::group(
 
         Route::group(['prefix' => 'profile'], function () {
             Route::put('/', [App\Http\Controllers\UserController::class, 'update']);
+            Route::delete('/', [App\Http\Controllers\UserController::class, 'destroy']);
         });
+        
         Route::apiResource('/users', App\Http\Controllers\UserController::class, [
-            'only' => ['index', 'show', 'destroy']
+            'only' => ['index', 'show']
         ]);
 
-        Route::apiResource('/wallets', App\Http\Controllers\WalletController::class, [
+        Route::apiResource('/wallet', App\Http\Controllers\WalletController::class, [
             'only' => ['index']
         ]);
 

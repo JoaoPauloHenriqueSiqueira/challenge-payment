@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
-use App\Http\Resources\WalletResource;
+use App\Http\Resources\MyWalletResource;
 use App\Repositories\Contracts\WalletRepositoryInterface;
 use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class WalletService
 {
     protected $repository;
+    protected $transactionService;
 
-    public function __construct(WalletRepositoryInterface $repository)
-    {
+    public function __construct(
+        WalletRepositoryInterface $repository
+    ) {
         $this->repository = $repository;
     }
 
@@ -24,7 +27,8 @@ class WalletService
      */
     public function showMyWallet(): JsonResource
     {
-        return new WalletResource($this->repository->firstOrCreate(["user_id" => Auth()->user()->id]));
+        $wallet = $this->repository->firstOrCreate(["user_id" => Auth()->user()->id]);
+        return new MyWalletResource($this->repository->find($wallet->id));
     }
 
     /**
@@ -61,18 +65,28 @@ class WalletService
     /**
      * Função para depositar dinheiro na conta
      *
+     * @todo Criar regra DEPÓSITO (banco, controller, service e repository) para histórico de transações
+     * 
      * @param [type] $request
      * @return Response
      */
-    public function depositMyAccount($request): Response
+    public function depositMyAccount($request)
     {
-        $amount = $request->amount;
-        $walletDb = $this->getMyWallet();
+        DB::beginTransaction();
 
-        $walletDb->amount = $walletDb->amount + $amount;
-        $walletDb->save();
+        try {
+            $amount = $request->amount;
+            $walletDb = $this->getMyWallet();
+            $walletDb->amount = $walletDb->amount + $amount;
+            $walletDb->save();
 
-        return response(['message' => "Valor adicionado com sucesso"]);
+            DB::commit();
+
+            return response(['message' => "Valor depositado com sucesso"], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response(['message' => $e->getMessage()], 422);
+        }
     }
 
     /**

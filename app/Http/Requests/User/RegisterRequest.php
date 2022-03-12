@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Helpers\Format;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -33,6 +34,21 @@ class RegisterRequest extends FormRequest
         return $valid;
     }
 
+    public function getValidatorInstance()
+    {
+        $this->extractNumberCPF();
+        return parent::getValidatorInstance();
+    }
+
+    private function extractNumberCPF()
+    {
+        if ($this->request->has('cpf')) {
+            $this->merge([
+                'cpf' => Format::extractNumbers($this->request->get('cpf'))
+            ]);
+        }
+    }
+
     public function messages()
     {
         return [
@@ -48,9 +64,8 @@ class RegisterRequest extends FormRequest
             'password.max' => 'Password precisa ter no máximo 20 caracteres',
             'cpf.unique' => 'Esse CPF já está registrado em nossa base',
             'cpf.required' => 'CPF é um campo obrigatório',
-            'cpf.min' => 'CPF precisa ter 11 campos (EX: 11122233322',
-            'cpf.max' => 'CPF precisa ter 11 campos (EX: 11122233322',
-
+            'cpf.min' => 'CPF precisa ter 14 campos (EX: 111.222.333-22)',
+            'cpf.max' => 'CPF precisa ter 14 campos (EX: 111.222.333-22)',
         ];
     }
 }
