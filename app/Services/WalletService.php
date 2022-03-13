@@ -126,6 +126,8 @@ class WalletService
     {
         $walletDb = $this->getMyWallet();
 
+        \Log::info($walletDb);
+
         $amount = $request->amount;
 
         if ($walletDb->amount < $amount) {

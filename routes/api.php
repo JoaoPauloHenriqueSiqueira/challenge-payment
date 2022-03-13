@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(
     ['middleware' => ['auth:sanctum']],
     function () {
-        Route::post('/logout', [App\Http\Controllers\Auth\UserAuthController::class, 'logout']);
+        Route::post('/logout', [App\Http\Controllers\Auth\UserAuthController::class, 'logout'])->name('logout');
 
         Route::group(['prefix' => 'profile'], function () {
             Route::put('/', [App\Http\Controllers\UserController::class, 'update']);
@@ -42,4 +42,4 @@ Route::group(
 );
 
 Route::post('/register', [App\Http\Controllers\Auth\UserAuthController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\Auth\UserAuthController::class, 'login']);
+Route::post('/login', [App\Http\Controllers\Auth\UserAuthController::class, 'login'])->name('login');
