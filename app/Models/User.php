@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function getCpfAttribute()
     {
-        return Format::cpfExpression($this->attributes['cpf']);
+        return app(Format::class)->cpfExpression($this->attributes['cpf']);
     }
 
     public function received()

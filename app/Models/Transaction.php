@@ -25,11 +25,11 @@ class Transaction extends Model
 
     public function getAmountFormatAttribute()
     {
-        return Format::money($this->attributes['amount']);
+        return app(Format::class)->money($this->attributes['amount']);
     }
 
     public function getCreatedAtAttribute()
     {
-        return Carbon::parse($this->attributes['created_at'])->format('d/m/Y h:i:s');
+        return app(Carbon::class)->parse($this->attributes['created_at'])->format('d/m/Y h:i:s');
     }
 }

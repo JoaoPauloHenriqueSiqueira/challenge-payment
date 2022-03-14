@@ -2,15 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Helpers\Format;
-use App\Http\Controllers\GoogleSheetsController;
-use App\Http\Controllers\SPIDController;
-use App\Http\Controllers\VTEXArtigoController;
-use App\Http\Controllers\VTEXController;
-use App\Http\Controllers\VTEXProdutoController;
-use App\Services\ArtigoService;
 use App\Services\External\NotifyTransactionService;
-use App\Services\ProdutoService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,7 +20,7 @@ class Notify implements ShouldQueue
     public function __construct($user, $amount, $hour)
     {
         $this->user = $user;
-        $this->amount = Format::money($amount);
+        $this->amount = $amount;
         $this->hour = $hour;
     }
 

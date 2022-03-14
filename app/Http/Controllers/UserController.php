@@ -85,9 +85,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($userId)
     {
-        return $this->service->get($id);
+        return $this->service->get($userId);
     }
 
     /**
