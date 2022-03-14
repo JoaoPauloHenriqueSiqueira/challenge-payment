@@ -50,12 +50,12 @@ php artisan key:generate
 ```
 php artisan queue:listen --queue=mail
 ```
-# Run tests 
+## Run tests 
 ```
 php artisan test
 ```
 
-# Code Verify PHPMD
+## Code Verify PHPMD
 ```
 vendor/bin/phpmd app  text cleancode,codesize,controversial,design,naming,unusedcode
 ```
