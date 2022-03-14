@@ -7,6 +7,7 @@ use App\Jobs\Notify;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
 use App\Services\External\AuthorizationTransactionService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class TransactionService
@@ -31,6 +32,7 @@ class TransactionService
     public function deposit($request)
     {
         $myUser = Auth()->user();
+
         $shopkeeper = $myUser->is_shopkeeper;
 
         if ($shopkeeper) {
@@ -48,6 +50,9 @@ class TransactionService
             $this->validTransaction();
 
             $user = $walletPayee->user;
+            if (!$user) {
+                throw new Exception('Usuário removeu a conta');
+            }
 
             $this->create($myUser->id, $user->id, $request->amount);
 
@@ -57,7 +62,7 @@ class TransactionService
 
             return response([
                 "payload" => [
-                    "value" => Format::money($request->amount),
+                    "value" => app(Format::class)->money($request->amount),
                     "payer" => Auth()->user()->wallet->uuid,
                     "payee" => $walletPayee->user->wallet->uuid
 
@@ -77,8 +82,8 @@ class TransactionService
      */
     public function validTransaction()
     {
-        $authorizationTransaction = new AuthorizationTransactionService();
-        $response = $authorizationTransaction->consult();
+        $authorizationAPI = new AuthorizationTransactionService();
+        $response = $authorizationAPI->consult();
 
         if ($response instanceof \Exception) {
             throw $response;

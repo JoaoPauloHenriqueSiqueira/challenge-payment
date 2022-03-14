@@ -44,7 +44,7 @@ class RegisterRequest extends FormRequest
     {
         if ($this->request->has('cpf')) {
             $this->merge([
-                'cpf' => Format::extractNumbers($this->request->get('cpf'))
+                'cpf' => app(Format::class)->extractNumbers($this->request->get('cpf'))
             ]);
         }
     }

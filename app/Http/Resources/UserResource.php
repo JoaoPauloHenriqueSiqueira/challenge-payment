@@ -13,7 +13,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' =>  $this->email,
-            'cpf' => Format::mask($this->cpf, "***.#######-**"),
+            'cpf' => app(Format::class)->mask($this->cpf, "***.#######-**"),
             'wallet' => new WalletResource($this->wallet)
         ];
     }

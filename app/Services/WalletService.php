@@ -47,9 +47,9 @@ class WalletService
      *
      * @return mixed
      */
-    public function find($id)
+    public function find($walletId)
     {
-        return $this->repository->find($id)->with('user');
+        return $this->repository->find($walletId)->with('user');
     }
 
     /**
@@ -72,7 +72,8 @@ class WalletService
      */
     public function depositMyAccount($request)
     {
-        DB::beginTransaction();
+        $database = app(DB::class);
+        $database->beginTransaction();
 
         try {
             $amount = $request->amount;
@@ -80,11 +81,11 @@ class WalletService
             $walletDb->amount = $walletDb->amount + $amount;
             $walletDb->save();
 
-            DB::commit();
+            $database->commit();
 
             return response(['message' => "Valor depositado com sucesso"], 200);
         } catch (\Exception $e) {
-            DB::rollback();
+            $database->rollback();
             return response(['message' => $e->getMessage()], 422);
         }
     }
@@ -125,8 +126,6 @@ class WalletService
     public function withdraw($request): Response
     {
         $walletDb = $this->getMyWallet();
-
-        \Log::info($walletDb);
 
         $amount = $request->amount;
 

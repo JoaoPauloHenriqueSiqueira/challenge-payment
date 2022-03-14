@@ -29,7 +29,7 @@ class Wallet extends Model
 
     public function getAmountFormatAttribute()
     {
-        return Format::money($this->attributes['amount']);
+        return app(Format::class)->money($this->attributes['amount']);
     }
 
     public function deposits()

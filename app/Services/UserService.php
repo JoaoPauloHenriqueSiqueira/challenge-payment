@@ -7,12 +7,10 @@ use App\Http\Requests\User\RegisterRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserService
 {
@@ -120,10 +118,10 @@ class UserService
      * @param [type] $id
      * @return mixed
      */
-    public function get($id)
+    public function get($userId)
     {
         try {
-            return new UserResource($this->repository->find($id));
+            return new UserResource($this->repository->find($userId));
         } catch (ModelNotFoundException $e) {
             return response([
                 'message' => 'Usuário não encontrado em nossa base'
