@@ -58,7 +58,7 @@ class TransactionService
 
             DB::commit();
 
-            Notify::dispatch($user, $request->amount, Carbon::now()->format('d/m/Y h:i:s'));
+            Notify::dispatch($user, $request->amount, Carbon::now()->format('d/m/Y h:i:s'))->onQueue('mail');;
 
             return response([
                 "payload" => [
