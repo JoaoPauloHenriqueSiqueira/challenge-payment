@@ -45,3 +45,18 @@ php artisan key:generate
 ## Documentação
 
 [Documentação](http://localhost/docs)
+
+## Queue email (local)
+```
+php artisan queue:listen --queue=mail
+```
+# Run tests 
+```
+php artisan test
+```
+
+# Code Verify PHPMD
+```
+vendor/bin/phpmd app  text cleancode,codesize,controversial,design,naming,unusedcode
+```
+
